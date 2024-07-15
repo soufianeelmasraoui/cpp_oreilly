@@ -1,17 +1,29 @@
 #include <iostream>
+
 #include <windows.h>
+
 #include <mysql.h>
+
 #include <fstream>
+
 #include <sstream>
+
 #include <ctime>
+
 #include <cstring>
+
 #include <array>
+
 #include <string>
+
 #include <iphlpapi.h>
+
 #include <ws2tcpip.h>
+
 #include <cstdio>
+
 #include <vector>
-//-----------------------
+ //-----------------------
 #pragma comment(lib, "Iphlpapi.lib")
 #pragma comment(lib, "Ws2_32.lib")
 #define MIB_IF_TYPE_802_11_WIRELESS 71
@@ -204,17 +216,17 @@ int get_info_storage_used() {
   int disk_used = 0;
   ULARGE_INTEGER freeBytesAvailable, totalNumberOfBytes, totalNumberOfFreeBytes;
 
-    if (GetDiskFreeSpaceEx(NULL, &freeBytesAvailable, &totalNumberOfBytes, &totalNumberOfFreeBytes)) {
-        DWORDLONG totalDiskSize = totalNumberOfBytes.QuadPart;
-        DWORDLONG freeDiskSpace = freeBytesAvailable.QuadPart;
+  if (GetDiskFreeSpaceEx(NULL, & freeBytesAvailable, & totalNumberOfBytes, & totalNumberOfFreeBytes)) {
+    DWORDLONG totalDiskSize = totalNumberOfBytes.QuadPart;
+    DWORDLONG freeDiskSpace = freeBytesAvailable.QuadPart;
 
-        // Calculate used storage in bytes
-        DWORDLONG usedDiskSpace = totalDiskSize - freeDiskSpace;
+    // Calculate used storage in bytes
+    DWORDLONG usedDiskSpace = totalDiskSize - freeDiskSpace;
 
-        // Convert used storage to megabytes
-        int disk_used = static_cast<int>(usedDiskSpace / (1024 * 1024));
+    // Convert used storage to megabytes
+    int disk_used = static_cast < int > (usedDiskSpace / (1024 * 1024));
 
-        return disk_used;
+    return disk_used;
   } else {
     std::cerr << "Error get_info_storage_used: " << GetLastError() << std::endl;
   }
@@ -265,9 +277,10 @@ void insert_in_database() {
     int qstate = 0;
 
     stringstream ss;
-    ss << "INSERT INTO device_info(mac_address, ip_address,ram_size,ram_used,storage_size,storage_used, date_time,date_commande) VALUES('"
-     << macAddress << "','" << ipAddress << "','" << ram_size << "','" <<ram_used << "','" <<disk_size << "','" <<storage_used << "','" <<dateTime << "',NOW())";
-
+    ss << "INSERT INTO device_info(mac_address, ip_address,ram_size,ram_used,storage_size,storage_used, date_time,date_commande) VALUES('" <<
+      macAddress << "','" << ipAddress << "','" << ram_size << "','" << ram_used << "','" << disk_size << "','" << storage_used << "','" << dateTime << "',NOW())";
+    cout << "\n";
+    cout << "\n";
     string query = ss.str();
     cout << query << endl;
     const char * q = query.c_str();
@@ -291,48 +304,48 @@ void insert_in_database() {
 int main() {
   int choix;
 
-while (true) {
-  std::cout << "Selectionnez la commande a excecuter \n";
+  while (true) {
+    std::cout << "Selectionnez la commande a excecuter \n";
 
-  std::cout << "1- Operation de calcul/SWITCH/BOUCLES FOR\n";
-  std::cout << "2- Informations systeme \n";
-  std::cout << "3- Inserer sur Base de donnees\n";
-  std::cout << "0- Quitter\n ";
-  std::cin >> choix;
+    std::cout << "1- Operation de calcul/SWITCH/BOUCLES FOR\n";
+    std::cout << "2- Informations systeme \n";
+    std::cout << "3- Inserer sur Base de donnees\n";
+    std::cout << "0- Quitter\n ";
+    std::cin >> choix;
 
-  switch (choix) {
-  case 1:
+    switch (choix) {
+    case 1:
 
-    int a;
-    cout << "Saisissez A 'Chiffre' : ";
-    cin >> a;
-    int b;
-    cout << "Saisissez b 'Chiffre': ";
-    cin >> b;
+      int a;
+      cout << "Saisissez A 'Chiffre' : ";
+      cin >> a;
+      int b;
+      cout << "Saisissez b 'Chiffre': ";
+      cin >> b;
 
-    operation(a, b, "+");
+      operation(a, b, "+");
 
-    operation(a, b, "-");
+      operation(a, b, "-");
 
-    operation(a, b, "*");
+      operation(a, b, "*");
 
-    operation(a, b, "/");
+      operation(a, b, "/");
 
-    switch_func(a, b);
+      switch_func(a, b);
 
-    boucles_func();
-    break;
-  case 2:
-    device_info();
-    break;
-  case 3:
-    insert_in_database();
-    break;
-  case 0:
-    return 0;
-  default:
-    std::cout << "Choix invalide";
+      boucles_func();
+      break;
+    case 2:
+      device_info();
+      break;
+    case 3:
+      insert_in_database();
+      break;
+    case 0:
+      return 0;
+    default:
+      return 0;
+    }
   }
-}
 }
 ////////////////////////////////////////////////// Fin Main
